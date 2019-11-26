@@ -140,7 +140,7 @@
 			
 			<view class="action-btn-group">
 				<button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
-				<button type="primary" class=" action-btn no-border add-cart-btn">加入购物车</button>
+				<button type="primary" class=" action-btn no-border add-cart-btn" @click="addToCart">加入购物车</button>
 			</view>
 		</view>
 		
@@ -202,6 +202,8 @@
 		},
 		data() {
 			return {
+			    currentId:"",
+
 				specClass: 'none',
 				specSelected:[],
 
@@ -302,6 +304,7 @@
 			
 			//接收传值,id里面放的是标题，因为测试数据并没写id 
 			// 接受url: `/pages/product/product?id=${id}`
+			this.currentId = options.id
 			let id = options.id;
 			if(id){
 				//this.$api.msg(`点击了${id}`);
@@ -341,6 +344,10 @@
 			this.shareList = await this.$api.json('shareList');
 		},
 		methods:{
+
+            addToCart(){
+                currentId
+			},
 			//规格弹窗开关
 			toggleSpec() {
 				if(this.specClass === 'show'){

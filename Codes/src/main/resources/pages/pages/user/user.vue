@@ -5,7 +5,7 @@
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box">
-					<image class="portrait" src="/static/missing-face.png"></image>
+					<image class="portrait" src="/static/index/display/zs1.png"></image>
 				</view>
 				<view class="info-box">
 					<text class="username">{{userInfo.name || '游客,请登录！'}}</text>

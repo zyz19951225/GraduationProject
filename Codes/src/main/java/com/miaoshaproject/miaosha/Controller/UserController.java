@@ -3,25 +3,24 @@ package com.miaoshaproject.miaosha.Controller;
 import com.alibaba.druid.util.StringUtils;
 import com.miaoshaproject.miaosha.Controller.viewobject.UserVO;
 import com.miaoshaproject.miaosha.dataobject.AddressDO;
-import com.miaoshaproject.miaosha.dataobject.UserDO;
+import com.miaoshaproject.miaosha.dataobject.CartDO;
+import com.miaoshaproject.miaosha.dataobject.FruitInfoDO;
 import com.miaoshaproject.miaosha.error.BusinessException;
 import com.miaoshaproject.miaosha.error.EmBusinessError;
 import com.miaoshaproject.miaosha.response.CommonReturnType;
 import com.miaoshaproject.miaosha.service.AddressService;
+import com.miaoshaproject.miaosha.service.CartService;
+import com.miaoshaproject.miaosha.service.FruitInfoService;
+import com.miaoshaproject.miaosha.service.Impl.CartServiceImpl;
 import com.miaoshaproject.miaosha.service.Impl.UserServiceImpl;
-import com.miaoshaproject.miaosha.service.model.AddressModel;
 import com.miaoshaproject.miaosha.service.model.UserModel;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 @Controller("user")
@@ -33,7 +32,10 @@ public class UserController {
     private UserServiceImpl userServiceImpl;
     @Autowired
     private AddressService addressService;
-
+    @Autowired
+    private CartServiceImpl cartService;
+    @Autowired
+    FruitInfoService fruitInfoServiceImpl;
 
     @Autowired
     private HttpServletRequest httpServletRequest;
@@ -83,15 +85,40 @@ public class UserController {
         return CommonReturnType.create(addressDOList);
     }
 
-    //用户地址Update
-    @RequestMapping(value = "/updateUsersAddress")
+
+    //查看购物车
+    @RequestMapping(value = "/checkMyCart")
     @ResponseBody
-    public CommonReturnType updateUsersAddress(@RequestBody AddressDO addressDO) throws BusinessException {
-        int flag = addressService.updateByPrimaryKey(addressDO);
-        return CommonReturnType.create(null);
+    public CommonReturnType checkMyCart(int userId) throws BusinessException {
+        List<CartDO> cartDOList = cartService.selectByUserId(userId);
+        return CommonReturnType.create(cartDOList);
     }
 
-    //用户地址Update
+
+
+    //加入购物车
+    @RequestMapping(value = "/addToCart")
+    @ResponseBody
+    public CommonReturnType addToCart(int userId,int fruitId) throws BusinessException {
+
+        int flag = cartService.countByCriteria(userId,fruitId);
+
+        if(flag ==0){
+            FruitInfoDO fruitInfoDO = fruitInfoServiceImpl.selectByPrimaryKey(fruitId);
+            CartDO cartDO = new CartDO();
+            BeanUtils.copyProperties(fruitInfoDO, cartDO);
+            cartDO.setId(null);
+            cartDO.setUserId(userId);
+            int addToCarrtFlag = cartService.insertSelective(cartDO);
+            return CommonReturnType.createAddMessage("加入购物车成功");
+        }else
+        {
+            return CommonReturnType.createAddMessage("已加入购物车");
+        }
+
+    }
+
+    //用户地址Add
     @RequestMapping(value = "/addUsersAddress")
     @ResponseBody
     public CommonReturnType addUsersAddress(@RequestBody AddressDO addressDO) throws BusinessException {

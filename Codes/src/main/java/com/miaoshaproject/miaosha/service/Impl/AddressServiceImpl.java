@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AddressServiceInfo implements AddressService {
+public class AddressServiceImpl implements AddressService {
     @Autowired
     AddressDOMapper addressDOMapper;
 
