@@ -5,7 +5,7 @@
 			<image src="/static/emptyCart.jpg" mode="aspectFit"></image>
 			<view v-if="hasLogin" class="empty-tips">
 				空空如也
-				<navigator class="navigator" v-if="hasLogin" url="../index/index" open-type="switchTab">随便逛逛></navigator>
+				<navigator class="navigator" v-if="hasLogin" url="../index/index" open-type="switchTab">随便逛逛呗></navigator>
 			</view>
 			<view v-else class="empty-tips">
 				空空如也
@@ -15,7 +15,7 @@
 		<view v-else>
 			<!-- 列表 -->
 			<view class="cart-list">
-				<block v-for="(item, index) in cartList" :key="item.id">
+				<block v-for="(item, index) in cartList" :key="index">
 					<view
 							class="cart-item"
 							:class="{'b-b': index!==cartList.length-1}"
@@ -28,6 +28,7 @@
 								   @load="onImageLoad('cartList', index)"
 								   @error="onImageError('cartList', index)"
 							></image>
+							<!--是否选中-->
 							<view
 									class="yticon icon-xuanzhong2 checkbox"
 									:class="{checked: item.checked}"
@@ -36,20 +37,21 @@
 						</view>
 						<view class="item-right">
 							<text class="clamp title">{{item.title}}</text>
-							<text class="attr">{{item.attr_val}}</text>
-							<text class="price">¥{{item.price}}</text>
+							<text class="attr">{{item.description}}</text>
+							<text class="price">{{item.price}}</text>
 							<uni-number-box
 									class="step"
 									:min="1"
 									:max="item.stock"
-									:value="item.number>item.stock?item.stock:item.number"
-									:isMax="item.number>=item.stock?true:false"
-									:isMin="item.number===1"
+									:value="item.num>item.stock?item.stock:item.num"
+									:isMax="item.num>=item.stock?true:false"
+									:isMin="item.num===1"
 									:index="index"
 									@eventChange="numberChange"
 							></uni-number-box>
 						</view>
-						<text class="del-btn yticon icon-fork" @click="deleteCartItem(index)"></text>
+						<!--对应删除按钮-->
+						<text class="del-btn yticon icon-fork" @click="deleteCartItem(item.id)"></text>
 					</view>
 				</block>
 			</view>
@@ -67,11 +69,11 @@
 				</view>
 				<view class="total-box">
 					<text class="price">¥{{total}}</text>
-					<text class="coupon">
-						已优惠
-						<text>74.35</text>
-						元
-					</text>
+					<!--<text class="coupon">-->
+						<!--已优惠-->
+						<!--<text>74.35</text>-->
+						<!--元-->
+					<!--</text>-->
 				</view>
 				<button type="primary" class="no-border confirm-btn" @click="createOrder">去结算</button>
 			</view>
@@ -96,10 +98,12 @@
                 cartList: [],
             };
         },
-        onLoad(){
+        onShow(){
             this.loadData();
+
         },
         watch:{
+
             //显示空白页
             cartList(e){
                 let empty = e.length === 0 ? true: false;
@@ -109,18 +113,36 @@
             }
         },
         computed:{
-            ...mapState(['hasLogin'])
+            ...mapState(['hasLogin','userInfo'])
         },
         methods: {
             //请求数据
-            async loadData(){
-                let list = await this.$api.json('cartList');
-                let cartList = list.map(item=>{
-                    item.checked = true;
-                    return item;
-                });
-                this.cartList = cartList;
-                this.calcTotal();  //计算总价
+             loadData(){
+                var _this = this
+                console.log("carList!!!!!!")
+				var params = this.userInfo.id
+                this.$http.post("user/checkMyCart?userId="+ params).then((res) => {
+                    console.log("success")
+                    console.log(res)
+                    if (res.data.status == "success") {
+						var list = res.data.data
+                        let cartList = list.map(item=>{
+                            item.checked = true;
+                            return item;
+                        });
+                        _this.cartList = cartList;
+                        _this.calcTotal();  //计算总价
+                    }else {
+                        this.$api.msg(res.data.message);
+                    }
+                }).catch(error => {
+                    console.log(error)
+                }).finally(() => {
+
+                })
+                //let list = await this.$api.json('cartList');
+                //cartList添加属性
+
             },
             //监听image加载完成
             onImageLoad(key, index) {
@@ -128,6 +150,7 @@
             },
             //监听image加载失败
             onImageError(key, index) {
+                 console.log("ImageErroe")
                 this[key][index].image = '/static/errorImage.jpg';
             },
             navToLogin(){
@@ -151,27 +174,53 @@
             },
             //数量
             numberChange(data){
-                this.cartList[data.index].number = data.number;
+                console.log(data.index)
+                console.log(data.number)
+                this.cartList[data.index].num = data.number;
                 this.calcTotal();
             },
             //删除
-            deleteCartItem(index){
-                let list = this.cartList;
-                let row = list[index];
-                let id = row.id;
+            deleteCartItem(id){
+                console.log(id)
+				var _this = this
+                this.$http.post("user/deleteSelectFruit?id="+ id).then((res) => {
+                    console.log("success")
+                    console.log(res)
+                    if (res.data.status == "success") {
+						this.loadData();
+                    }else {
+                        this.$api.msg(res.data.message);
+                    }
+                }).catch(error => {
+                    console.log(error)
+                    return
+                }).finally(() => {
 
-                this.cartList.splice(index, 1);
-                this.calcTotal();
-                uni.hideLoading();
+                })
+                // this.calcTotal();
+                // uni.hideLoading();
             },
             //清空
             clearCart(){
+                 var id = this.userInfo.id
                 uni.showModal({
                     content: '清空购物车？',
                     success: (e)=>{
-                        if(e.confirm){
-                            this.cartList = [];
-                        }
+                        this.$http.post("user/deleteAllFruit?id="+ id).then((res) => {
+                            console.log("success")
+                            console.log(res)
+                            if (res.data.status == "success") {
+                                this.$api.msg(res.data.message)
+                                this.cartList = [];
+                            }else {
+                                this.$api.msg(res.data.message);
+                            }
+                        }).catch(error => {
+                            console.log(error)
+                            return
+                        }).finally(() => {
+
+                        })
                     }
                 })
             },
@@ -186,7 +235,7 @@
                 let checked = true;
                 list.forEach(item=>{
                     if(item.checked === true){
-                        total += item.price * item.number;
+                        total += item.price * item.num;
                     }else if(checked === true){
                         checked = false;
                     }
@@ -201,8 +250,8 @@
                 list.forEach(item=>{
                     if(item.checked){
                         goodsData.push({
-                            attr_val: item.attr_val,
-                            number: item.number
+                            description: item.description,
+                            num: item.num
                         })
                     }
                 })

@@ -9,5 +9,7 @@ public interface FruitInfoService {
 
     List<FruitInfoDO> selectByCriteria();
 
+    List<FruitInfoDO> selectFruitBatch(Integer startNum);
+
     FruitInfoDO selectByPrimaryKey(Integer fruitId);
 }

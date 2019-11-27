@@ -155,26 +155,24 @@
 
 			//获取展示水果
 			getAllFruitInfoList() {
-			    uni.request({
-			        url: 'http://127.0.0.1:9999/getAllFruitInfoList', //仅为示例，并非真实接口地址。
-			        data: {
+                this.$http.post("getAllFruitInfoList").then((res) => {
+                    console.log("success")
+                    console.log(res)
+                    if (res.data.status == "success") {
+                        let goodsList =res.data.data;
+                        console.log(goodsList)
+                        this.goodsList = goodsList || [];
+                    }else {
+                        this.$api.msg(res.data.message);
+                    }
+                }).catch(error => {
+                    console.log(error)
+                }).finally(() => {
+                })
 
-			        },
-			        header: {					
-			            //自定义请求头信息
-			        },
-			        success: (res) => {
-			           let goodsList =res.data.data;
-			           console.log(goodsList)
-			           this.goodsList = goodsList || [];
-			        },
-					fail:(res) =>{
-						console.log("--*--")
-					}
-			    });
-			},
-			
-			
+            },
+
+
 		},
 		// #ifndef MP
 		// 标题栏input搜索框点击

@@ -96,13 +96,31 @@ public class UserController {
 
 
 
+    //删除购物车商品
+    @RequestMapping(value = "/deleteSelectFruit")
+    @ResponseBody
+    public CommonReturnType deleteSelectFruit(@RequestParam(name = "id")int fruitPrimaryId) throws BusinessException {
+        int flag= cartService.deleteByPrimaryKey(fruitPrimaryId);
+        return CommonReturnType.createAddMessage("删除成功");
+    }
+
+    //删除购物车所有商品
+    @RequestMapping(value = "/deleteAllFruit")
+    @ResponseBody
+    public CommonReturnType deleteAllFruit(@RequestParam(name = "id")int userId) throws BusinessException {
+        int flag= cartService.deleteByCriteria(userId);
+        return CommonReturnType.createAddMessage("删除成功");
+    }
+
+
     //加入购物车
     @RequestMapping(value = "/addToCart")
     @ResponseBody
-    public CommonReturnType addToCart(int userId,int fruitId) throws BusinessException {
+    public CommonReturnType addToCart(@RequestParam(value = "userId") String userIdstr,@RequestParam(value = "fruitId")String fruitIdstr) throws BusinessException {
 
+        Integer userId =Integer.valueOf(userIdstr);
+        Integer fruitId =Integer.valueOf(fruitIdstr);
         int flag = cartService.countByCriteria(userId,fruitId);
-
         if(flag ==0){
             FruitInfoDO fruitInfoDO = fruitInfoServiceImpl.selectByPrimaryKey(fruitId);
             CartDO cartDO = new CartDO();

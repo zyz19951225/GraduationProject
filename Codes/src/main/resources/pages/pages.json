@@ -57,7 +57,7 @@
 		},
 
 		{
-			"path": "pages/userinfo/userinfo",
+			"path": "pages/user/userInfo",
 			"style": {
 				"navigationBarTitleText": "修改资料"
 			}
@@ -143,7 +143,8 @@
 			"style": {
 				"navigationBarTitleText": ""
 			}
-		},{
+		},
+		{
 			"path": "pages/public/register",
 			"style": {
 				"navigationBarTitleText": "",
@@ -172,7 +173,7 @@
 			}
         }
         ,{
-            "path" : "pages/category/category",
+            "path" : "pages/product/list",
             "style" : {
 				"navigationBarTitleText": "分类",
 				"app-plus": {
@@ -206,7 +207,7 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/category/category",
+				"pagePath": "pages/product/list",
 				"iconPath": "static/tab-cate.png",
 				"selectedIconPath": "static/tab-cate-current.png",
 				"text": "分类"

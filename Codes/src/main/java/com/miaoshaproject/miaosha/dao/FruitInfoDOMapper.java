@@ -4,6 +4,7 @@ import com.miaoshaproject.miaosha.dataobject.FruitInfoDO;
 import com.miaoshaproject.miaosha.dataobject.FruitInfoDOCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,9 @@ public interface FruitInfoDOMapper {
     List<FruitInfoDO> selectByCriteria(FruitInfoDOCriteria example);
 
     FruitInfoDO selectByPrimaryKey(Integer fruitId);
+
+    @Select("select * from fruit_info limit #{startNum},#{endNum}")
+    List<FruitInfoDO> selectFruitBatch(@Param("startNum") Integer startNum,@Param("endNum") Integer endNum);
 
     int updateByCriteriaSelective(@Param("record") FruitInfoDO record, @Param("example") FruitInfoDOCriteria example);
 

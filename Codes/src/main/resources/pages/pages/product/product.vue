@@ -196,6 +196,9 @@
 
 <script>
 	import share from '@/components/share';
+    import {
+        mapState,mapMutations
+    } from 'vuex';
 	export default{
 		components: {
 			share
@@ -208,39 +211,10 @@
 				specSelected:[],
 
 				fruitInfoDetail:[{
-                    description:"",
-                    fruitId:"",
-                    image:"",
-                    image1:"",
-                    image2:"",
-                    price:"",
-                    sales:"",
-                    stock:"",
-                    title:"",
 				}],
 
 				favorite: true,
 				shareList: [],
-				imgList: [
-					{
-						src: '/static/product/xq1.png'
-					},
-					{
-						src: '/static/product/xq2.png'
-					},
-					{
-						src: '/static/product/xq3.png'
-					}
-				],
-				desc: `
-					<div style="width:100%">
-						<img style="width:100%;display:block;" src="/static/product/xq1.png" />
-						<img style="width:100%;display:block;" src="/static/product/xq2.png" />
-						<img style="width:100%;display:block;" src="/static/product/xq3.png" />
-						<img style="width:100%;display:block;" src="/static/product/xq2.png" />
-						<img style="width:100%;display:block;" src="/static/product/xq1.png" />
-					</div>
-				`,
 				specList: [
 					{
 						id: 1,
@@ -262,44 +236,13 @@
 						pid: 1,
 						name: 'S',
 					},
-					{
-						id: 3,
-						pid: 1,
-						name: 'M',
-					},
-					{
-						id: 4,
-						pid: 1,
-						name: 'L',
-					},
-					{
-						id: 5,
-						pid: 1,
-						name: 'XL',
-					},
-					{
-						id: 6,
-						pid: 1,
-						name: 'XXL',
-					},
-					{
-						id: 7,
-						pid: 2,
-						name: '白色',
-					},
-					{
-						id: 8,
-						pid: 2,
-						name: '珊瑚粉',
-					},
-					{
-						id: 9,
-						pid: 2,
-						name: '草木绿',
-					},
+
 				]
 			};
 		},
+        computed:{
+            ...mapState(['addressList','userInfo'])
+        },
 		async onLoad(options){
 			
 			//接收传值,id里面放的是标题，因为测试数据并没写id 
@@ -346,7 +289,27 @@
 		methods:{
 
             addToCart(){
-                currentId
+                var form_query = {
+                    userId:this.userInfo.id,
+					fruitId:this.currentId
+				}
+                var params = this.jsonToStr(form_query)
+                this.$http.post("user/addToCart?"+ params).then((res) => {
+                    console.log("success")
+                    console.log(res)
+                    if (res.data.status == "success") {
+                        this.$api.msg(res.data.message);
+                    }else {
+                        this.$api.msg(res.data.message);
+                    }
+                }).catch(error => {
+                    console.log(error)
+                    return
+                }).finally(() => {
+
+                })
+
+
 			},
 			//规格弹窗开关
 			toggleSpec() {
@@ -396,7 +359,14 @@
 					url: `/pages/order/createOrder`
 				})
 			},
-			stopPrevent(){}
+			stopPrevent(){},
+            jsonToStr(json) {
+                let str = "";
+                for (let key in json) {
+                    str += "&" + key + "=" + json[key];
+                }
+                return str.substring(1);
+            },
 		},
 
 	}

@@ -9,10 +9,14 @@ import java.util.List;
 @Service
 public interface CartService {
     List<CartDO> selectByUserId(Integer id);
-
+    
     int insertSelective(CartDO record);
 
     int countByCriteria(int userId,int fruiltId);
+
+    int deleteByPrimaryKey(Integer id);
+
+    int deleteByCriteria(int userId);
 
 
 

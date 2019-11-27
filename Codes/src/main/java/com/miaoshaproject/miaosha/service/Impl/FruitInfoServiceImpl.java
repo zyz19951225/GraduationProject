@@ -25,6 +25,13 @@ public class FruitInfoServiceImpl implements FruitInfoService {
     }
 
     @Override
+    public List<FruitInfoDO> selectFruitBatch(Integer startNum) {
+        Integer endNum = startNum+8;
+        List<FruitInfoDO>  fruitInfoDOList = fruitInfoDOMapper.selectFruitBatch(startNum,endNum);
+        return fruitInfoDOList;
+    }
+
+    @Override
     public FruitInfoDO selectByPrimaryKey(Integer fruitId) {
         return fruitInfoDOMapper.selectByPrimaryKey(fruitId);
     }

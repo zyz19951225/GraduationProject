@@ -21,6 +21,7 @@ public class CartServiceImpl implements CartService {
         return cartDOList;
     }
 
+
     @Override
     public int insertSelective(CartDO record) {
         int flag = cartDOMapper.insertSelective(record);
@@ -36,6 +37,21 @@ public class CartServiceImpl implements CartService {
 
         int flag = cartDOMapper.countByCriteria(exmp);
 
+        return flag;
+    }
+
+    @Override
+    public int deleteByPrimaryKey(Integer id) {
+        int flag = cartDOMapper.deleteByPrimaryKey(id);
+        return flag;
+    }
+
+    @Override
+    public int deleteByCriteria(int userId) {
+        CartDOCriteria exmp = new CartDOCriteria();
+        CartDOCriteria.Criteria cs = exmp.createCriteria();
+        cs.andUserIdEqualTo(userId);
+        int flag = cartDOMapper.deleteByCriteria(exmp);
         return flag;
     }
 }
