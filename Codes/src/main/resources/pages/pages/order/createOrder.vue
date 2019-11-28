@@ -4,12 +4,19 @@
 		<navigator url="/pages/address/address?source=1" class="address-section">
 			<view class="order-content">
 				<text class="yticon icon-shouhuodizhi"></text>
-				<view class="cen">
+				<view class="cen" v-if="addressData !=null">
 					<view class="top">
-						<text class="name">{{userInfo.name}}</text>
+						<text class="name">{{addressData.ecipient}}</text>
 						<text class="mobile">{{addressData.telephone}}</text>
 					</view>
 					<text class="address">{{addressData.address}} {{addressData.area}}</text>
+				</view>
+				<view class="cen" v-else>
+					<view class="top">
+						<text class="name"></text>
+						<text class="mobile">请选择地址</text>
+					</view>
+					<text class="address"></text>
 				</view>
 				<text class="yticon icon-you"></text>
 			</view>
@@ -23,7 +30,7 @@
 				<text class="name">鲜丰水果</text>
 			</view>
 			<!-- 商品列表 -->
-			<view class="g-item" v-for="(item,index) in this.checkedFruit" :key="index">
+			<view class="g-item" v-if="orderType == 1" v-for="(item,index) in this.checkedFruit" :key="index">
 				<image :src="item.item.image"></image>
 				<view class="right">
 					<text class="title clamp">{{item.item.title}}</text>
@@ -31,6 +38,17 @@
 					<view class="price-box">
 						<text class="price">￥：{{item.item.price}}</text>
 						<text class="number">数量：{{item.item.num}}</text>
+					</view>
+				</view>
+			</view>
+			<view class="g-item" v-if="orderType == 0" v-for="(item,index) in this.checkedFruit" :key="index">
+				<image :src="item.image"></image>
+				<view class="right">
+					<text class="title clamp">{{item.title}}</text>
+					<text class="spec">{{item.description}}</text>
+					<view class="price-box">
+						<text class="price">￥：{{item.price}}</text>
+						<text class="number">数量：{{item.num}}</text>
 					</view>
 				</view>
 			</view>
@@ -98,6 +116,7 @@
 	export default {
 		data() {
 			return {
+			    orderType:"1",
                 orderInfo:{
 			        userId:"",
 					price:"",
@@ -121,19 +140,43 @@
         },
 		onLoad(option){
 		    //获取用户地址信息
-			this.addressData = this.addressList[0]
-			//获取用户在购物车checkrd商品列表信息
-			this.checkedFruit = JSON.parse(option.data).goodsData
-			for(var index in this.checkedFruit){
-			    this.needDeleteOrder.push(this.checkedFruit[index].item.id)
+            if (typeof (this.addressList[0]) == "undefined") {
+				this.addressData =null
+            }else{
+                this.addressData = this.addressList[0]
+				console.log(this.addressData)
 			}
-            console.log(this.needDeleteOrder);
-            this.totalPrice = JSON.parse(option.data).total
-			this.orderInfo.userId = this.userInfo.id
-			this.orderInfo.telephone = this.addressData.telephone
-			this.orderInfo.address = this.addressData.address
-			this.orderInfo.image = this.checkedFruit[0].item.image
-			this.orderInfo.price = this.totalPrice
+
+			//获取用户在购物车checkrd商品列表信息
+			console.log(JSON.parse(option.data).fruitInfoDetail)
+            if (typeof (JSON.parse(option.data).fruitInfoDetail) == "undefined") {
+			    this.orderType = "1"
+                this.checkedFruit = JSON.parse(option.data).goodsData
+                for(var index in this.checkedFruit){
+                    this.needDeleteOrder.push(this.checkedFruit[index].item.id)
+                }
+                console.log(this.needDeleteOrder);
+                this.totalPrice = JSON.parse(option.data).total
+                this.orderInfo.userId = this.userInfo.id
+                this.orderInfo.telephone = this.addressData.telephone
+                this.orderInfo.address = this.addressData.address
+                this.orderInfo.image = this.checkedFruit[0].item.image
+                this.orderInfo.price = this.totalPrice
+            }else{
+                this.orderType = "0"
+			    console.log(JSON.parse(option.data).fruitInfoDetail)
+                 this.checkedFruit = JSON.parse(option.data).fruitInfoDetail
+
+                 //this.needDeleteOrder.push(this.checkedFruit[0].id)
+                this.totalPrice = this.checkedFruit[0].price
+                this.orderInfo.userId = this.userInfo.id
+                this.orderInfo.telephone = this.addressData.telephone
+                this.orderInfo.address = this.addressData.address
+                this.orderInfo.image = this.checkedFruit[0].image
+                this.orderInfo.price = this.totalPrice
+
+			}
+
 		},
 		methods: {
             getUsersDefaultAddress(){
@@ -163,7 +206,8 @@
 				uni.redirectTo({
 					url:`/pages/money/pay?data=${JSON.stringify({
                             orderInfo: this.orderInfo,
-						     needDeleteOrder:this.needDeleteOrder
+						    needDeleteOrder:this.needDeleteOrder,
+							needPay:this.totalPrice
                         })}`
 				})
 			},

@@ -2,7 +2,7 @@
 	<view class="app">
 		<view class="price-box">
 			<text>支付金额</text>
-			<text class="price">38.88</text>
+			<text class="price">{{needPay}}</text>
 		</view>
 
 		<view class="pay-type-list">
@@ -49,7 +49,8 @@
 			return {
 				payType: 1,
 				orderInfo: {},
-				needDeleteOrder:[]
+				needDeleteOrder:[],
+				needPay:""
 			};
 		},
 		computed: {
@@ -60,6 +61,7 @@
 		    console.log(this.orderInfo)
 			this.needDeleteOrder = JSON.parse(options.data).needDeleteOrder
 			console.log(this.needDeleteOrder)
+			this.needPay = JSON.parse(options.data).needPay
 			
 		},
 

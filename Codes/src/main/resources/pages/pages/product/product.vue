@@ -250,27 +250,21 @@
 			this.currentId = options.id
 			let id = options.id;
 			if(id){
-				//this.$api.msg(`点击了${id}`);
-				uni.request({
-				    url: 'http://127.0.0.1:9999/getFruitInfoDetail', //仅为示例，并非真实接口地址。
-				    data: {
-				        id: id
-				    },
-				    header: {					
-				        //自定义请求头信息
-				    },
-				    success: (res) => {
-				        console.log(res.data.data);
-				        console.log("-----")
+                this.$http.post("getFruitInfoDetail?id="+ id).then((res) => {
+                    console.log("success")
+                    console.log(res)
+                    if (res.data.status == "success") {
                         var fruitInfoDetail = res.data.data;
                         this.fruitInfoDetail = fruitInfoDetail;
-				        // this.swiperLength = carouselList.length;
-				        // this.carouselList = carouselList;
-				    },
-					fail:(res) =>{
-						console.log("--*--")
-					}
-				});
+                    }else {
+                        this.$api.msg(res.data.message);
+                    }
+                }).catch(error => {
+                    console.log(error)
+                }).finally(() => {
+
+                })
+
 			}
 			
 			
@@ -356,7 +350,9 @@
 			},
 			buy(){
 				uni.navigateTo({
-					url: `/pages/order/createOrder`
+					url: `/pages/order/createOrder?data=${JSON.stringify({
+                        fruitInfoDetail: this.fruitInfoDetail
+                    })}`
 				})
 			},
 			stopPrevent(){},
