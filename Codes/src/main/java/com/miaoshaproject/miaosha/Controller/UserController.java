@@ -15,6 +15,7 @@ import com.miaoshaproject.miaosha.service.FruitInfoService;
 import com.miaoshaproject.miaosha.service.Impl.CartServiceImpl;
 import com.miaoshaproject.miaosha.service.Impl.UserServiceImpl;
 import com.miaoshaproject.miaosha.service.OrderInfoService;
+import com.miaoshaproject.miaosha.service.model.OrdersModel;
 import com.miaoshaproject.miaosha.service.model.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -186,6 +189,46 @@ public class UserController {
         int flag = orderInfoService.createOrderInfo(orderInfoDO);
         return CommonReturnType.create(null);
     }
+
+
+    //查看所有订单
+    @RequestMapping(value = "/viewAllOrders")
+    @ResponseBody
+    public CommonReturnType viewAllOrders(int userId) throws BusinessException {
+        System.out.println("viewAllOrders!!!");
+        //获取购物车所有订单
+        List<CartDO> cartDOList = cartService.selectByUserId(userId);
+        List<OrdersModel> ordersModelList = new ArrayList<>();
+        int id = -1;
+        if(cartDOList !=null && cartDOList.size() !=0){
+            for(int i=0;i<cartDOList.size();i++){
+                OrdersModel ordersModel = new OrdersModel();
+                BeanUtils.copyProperties(cartDOList.get(i),ordersModel);
+                ordersModel.setIdInCarts(cartDOList.get(i).getId());
+                ordersModel.setId(i);
+                ordersModel.setState(0);
+                ordersModel.setOrderTime(new Date());
+                ordersModelList.add(ordersModel);
+                id += i;
+            }
+        }
+
+        //获取所有订单信息
+        List<OrderInfoDO> orderInfoDOList = orderInfoService.selectByCriteria(userId);
+        if(orderInfoDOList !=null && orderInfoDOList.size() !=0) {
+            for (OrderInfoDO exmp : orderInfoDOList) {
+                OrdersModel ordersModel = new OrdersModel();
+                BeanUtils.copyProperties(exmp, ordersModel);
+                ordersModel.setState(1);
+                ordersModel.setTitle("已购买水果名称");
+                ordersModel.setDescription("This is description");
+                ordersModel.setNum(1);
+                ordersModelList.add(ordersModel);
+            }
+        }
+        return CommonReturnType.create(ordersModelList);
+    }
+
 
     //用户注册接口
     @RequestMapping(value = "/register")

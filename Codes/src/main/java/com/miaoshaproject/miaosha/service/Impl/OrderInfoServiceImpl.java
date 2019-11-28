@@ -2,6 +2,7 @@ package com.miaoshaproject.miaosha.service.Impl;
 
 import com.miaoshaproject.miaosha.dao.OrderInfoDOMapper;
 import com.miaoshaproject.miaosha.dataobject.OrderInfoDO;
+import com.miaoshaproject.miaosha.dataobject.OrderInfoDOCriteria;
 import com.miaoshaproject.miaosha.service.OrderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class OrderInfoServiceImpl implements OrderInfoService {
@@ -25,6 +27,15 @@ public class OrderInfoServiceImpl implements OrderInfoService {
         orderInfoDO.setOrderTime(date);
         int flag = orderInfoDOMapper.insertSelective(orderInfoDO);
         return flag;
+    }
+
+    @Override
+    public List<OrderInfoDO> selectByCriteria(int userId) {
+        OrderInfoDOCriteria exmp = new OrderInfoDOCriteria();
+        OrderInfoDOCriteria.Criteria cs = exmp.createCriteria();
+        cs.andUserIdEqualTo(userId);
+        List<OrderInfoDO> orderInfoDOList = orderInfoDOMapper.selectByCriteria(exmp);
+        return orderInfoDOList;
     }
 
     public String generateOrderNo() {
