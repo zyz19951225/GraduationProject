@@ -5,6 +5,7 @@ import com.miaoshaproject.miaosha.Controller.viewobject.UserVO;
 import com.miaoshaproject.miaosha.dataobject.AddressDO;
 import com.miaoshaproject.miaosha.dataobject.CartDO;
 import com.miaoshaproject.miaosha.dataobject.FruitInfoDO;
+import com.miaoshaproject.miaosha.dataobject.OrderInfoDO;
 import com.miaoshaproject.miaosha.error.BusinessException;
 import com.miaoshaproject.miaosha.error.EmBusinessError;
 import com.miaoshaproject.miaosha.response.CommonReturnType;
@@ -13,7 +14,10 @@ import com.miaoshaproject.miaosha.service.CartService;
 import com.miaoshaproject.miaosha.service.FruitInfoService;
 import com.miaoshaproject.miaosha.service.Impl.CartServiceImpl;
 import com.miaoshaproject.miaosha.service.Impl.UserServiceImpl;
+import com.miaoshaproject.miaosha.service.OrderInfoService;
 import com.miaoshaproject.miaosha.service.model.UserModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +32,9 @@ import java.util.Random;
 @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class UserController {
 
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
+
+
     @Autowired
     private UserServiceImpl userServiceImpl;
     @Autowired
@@ -36,6 +43,8 @@ public class UserController {
     private CartServiceImpl cartService;
     @Autowired
     FruitInfoService fruitInfoServiceImpl;
+    @Autowired
+    OrderInfoService orderInfoService;
 
     @Autowired
     private HttpServletRequest httpServletRequest;
@@ -70,21 +79,29 @@ public class UserController {
     @RequestMapping(value = "/findUserAddress")
     @ResponseBody
     public CommonReturnType findUserAddress(String userId) throws BusinessException {
-        System.out.println("--*--" + userId);
        Integer id =Integer.valueOf(userId);
-
         //入参校验
         if (id == null ) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
-        System.out.printf("***********************");
-
         //用户登陆服务，用来校验用户登陆是否合法
         List<AddressDO> addressDOList = addressService.selectByUserId(id);
-
         return CommonReturnType.create(addressDOList);
     }
 
+    //用户默认地址查询
+    @RequestMapping(value = "/selectUserDefaultAddress")
+    @ResponseBody
+    public CommonReturnType selectUserDefaultAddress(String userId) throws BusinessException {
+        Integer id =Integer.valueOf(userId);
+        //入参校验
+        if (id == null ) {
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+        }
+        //用户登陆服务，用来校验用户登陆是否合法
+        AddressDO addressDO = addressService.selectUserDefaultAddress(id);
+        return CommonReturnType.create(addressDO);
+    }
 
     //查看购物车
     @RequestMapping(value = "/checkMyCart")
@@ -103,6 +120,8 @@ public class UserController {
         int flag= cartService.deleteByPrimaryKey(fruitPrimaryId);
         return CommonReturnType.createAddMessage("删除成功");
     }
+
+
 
     //删除购物车所有商品
     @RequestMapping(value = "/deleteAllFruit")
@@ -144,6 +163,29 @@ public class UserController {
         return CommonReturnType.create(null);
     }
 
+
+
+    //删除已支付订单
+    @RequestMapping(value = "/deleteOrders")
+    @ResponseBody
+    public CommonReturnType deleteOrders(@RequestBody  String [] needDeleteOrders) throws BusinessException {
+
+        int[] needDeleteId = new int[needDeleteOrders.length];
+        for(int i=0;i<needDeleteOrders.length;i++){
+            needDeleteId[i] = Integer.parseInt(needDeleteOrders[i]);
+        }
+        System.out.println("--*--");
+        int flag = cartService.deleteByCriteria(needDeleteId);
+        return CommonReturnType.create(null);
+    }
+
+    //生成订单
+    @RequestMapping(value = "/createOrderInfo")
+    @ResponseBody
+    public CommonReturnType createOrderInfo(@RequestBody OrderInfoDO orderInfoDO) throws BusinessException {
+        int flag = orderInfoService.createOrderInfo(orderInfoDO);
+        return CommonReturnType.create(null);
+    }
 
     //用户注册接口
     @RequestMapping(value = "/register")

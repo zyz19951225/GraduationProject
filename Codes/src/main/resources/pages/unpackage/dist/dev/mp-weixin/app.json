@@ -40,7 +40,7 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/category/category",
+        "pagePath": "pages/product/list",
         "iconPath": "static/tab-cate.png",
         "selectedIconPath": "static/tab-cate-current.png",
         "text": "分类"

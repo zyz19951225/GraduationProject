@@ -18,6 +18,8 @@ public interface CartService {
 
     int deleteByCriteria(int userId);
 
+    int deleteByCriteria(int [] needDeleteId);
+
 
 
 

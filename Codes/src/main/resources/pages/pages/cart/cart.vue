@@ -250,15 +250,16 @@
                 list.forEach(item=>{
                     if(item.checked){
                         goodsData.push({
-                            description: item.description,
-                            num: item.num
+							item
                         })
                     }
                 })
+				console.log(goodsData)
 
                 uni.navigateTo({
                     url: `/pages/order/createOrder?data=${JSON.stringify({
-                        goodsData: goodsData
+                        goodsData: goodsData,
+						total:this.total
                     })}`
                 })
                 this.$api.msg('跳转下一页 sendData');

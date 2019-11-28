@@ -54,4 +54,14 @@ public class CartServiceImpl implements CartService {
         int flag = cartDOMapper.deleteByCriteria(exmp);
         return flag;
     }
+
+    @Override
+    public int deleteByCriteria(int [] needDeleteId ) {
+        int flag=0;
+        for(int id : needDeleteId){
+             flag = cartDOMapper.deleteByPrimaryKey(id);
+        }
+
+        return flag;
+    }
 }

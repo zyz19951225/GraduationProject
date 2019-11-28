@@ -15,7 +15,6 @@
 				</view>
 				<label class="radio">
 					<radio value="" color="#fa436a" :checked='payType == 1' />
-					</radio>
 				</label>
 			</view>
 			<view class="type-item b-b" @click="changePayType(2)">
@@ -25,7 +24,6 @@
 				</view>
 				<label class="radio">
 					<radio value="" color="#fa436a" :checked='payType == 2' />
-					</radio>
 				</label>
 			</view>
 			<view class="type-item" @click="changePayType(3)">
@@ -36,7 +34,6 @@
 				</view>
 				<label class="radio">
 					<radio value="" color="#fa436a" :checked='payType == 3' />
-					</radio>
 				</label>
 			</view>
 		</view>
@@ -51,13 +48,18 @@
 		data() {
 			return {
 				payType: 1,
-				orderInfo: {}
+				orderInfo: {},
+				needDeleteOrder:[]
 			};
 		},
 		computed: {
 		
 		},
 		onLoad(options) {
+            this.orderInfo = JSON.parse(options.data).orderInfo
+		    console.log(this.orderInfo)
+			this.needDeleteOrder = JSON.parse(options.data).needDeleteOrder
+			console.log(this.needDeleteOrder)
 			
 		},
 
@@ -66,8 +68,46 @@
 			changePayType(type) {
 				this.payType = type;
 			},
+
+			//删除支付成功的订单
+			deleteOrders(){
+			  var params = JSON.stringify(this.needDeleteOrder)
+
+                this.$http.post("user/deleteOrders",params).then((res) => {
+                    console.log(res)
+                    if (res.data.status == "success") {
+                        this.$api.msg(res.data.message)
+
+                    }else {
+                        this.$api.msg(res.data.message);
+                    }
+                }).catch(error => {
+                    console.log(error)
+                    return
+                }).finally(() => {
+
+                })
+
+            },
 			//确认支付
-			confirm: async function() {
+			confirm() {
+
+			    var params = this.orderInfo
+                this.$http.post("user/createOrderInfo",params).then((res) => {
+                    console.log(res)
+                    if (res.data.status == "success") {
+                        this.$api.msg(res.data.message)
+                        this.deleteOrders()
+                    }else {
+                        this.$api.msg(res.data.message);
+                    }
+                }).catch(error => {
+                    console.log(error)
+                    return
+                }).finally(() => {
+
+                })
+
 				uni.redirectTo({
 					url: '/pages/money/paySuccess'
 				})

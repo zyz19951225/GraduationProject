@@ -4,6 +4,7 @@ import com.miaoshaproject.miaosha.dataobject.AddressDO;
 import com.miaoshaproject.miaosha.dataobject.AddressDOCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,9 @@ public interface AddressDOMapper {
     List<AddressDO> selectByCriteriaWithRowbounds(AddressDOCriteria example, RowBounds rowBounds);
 
     List<AddressDO> selectByCriteria(AddressDOCriteria example);
+
+    @Select("select * from address where user_id = #{id} and default_address =1")
+    AddressDO selectUserDefaultAddress(Integer id);
 
 
     AddressDO selectByPrimaryKey(Integer id);

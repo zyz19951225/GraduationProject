@@ -1,12 +1,13 @@
 <template>
     <view class="content">
-        <view class="user-info-box">
+        <view class="user-info-box" >
+
             <view class="portrait-box">
                 <image class="portrait" src="/static/index/display/zs1.png"></image>
             </view>
-            <view class="info-box">
-                <text class="username">{{userInfo.name || '游客,请登录！'}}</text>
-            </view>
+            <!--<view class="info-box">-->
+                <!--<text class="username">{{userInfo.name || '游客,请登录！'}}</text>-->
+            <!--</view>-->
         </view>
         <view class="row b-b">
             <text class="tit">用户名</text>
@@ -180,6 +181,7 @@
         padding-top: 16upx;
     }
     .user-info-box{
+
         height: 180upx;
         display:flex;
         align-items:center;

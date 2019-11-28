@@ -31,4 +31,10 @@ public class AddressServiceImpl implements AddressService {
         int flag = addressDOMapper.insertSelective(record);
         return flag;
     }
+
+    @Override
+    public AddressDO selectUserDefaultAddress(Integer id) {
+        AddressDO addressDO = addressDOMapper.selectUserDefaultAddress(id);
+        return addressDO;
+    }
 }

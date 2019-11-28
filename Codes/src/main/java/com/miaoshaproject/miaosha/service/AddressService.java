@@ -11,4 +11,6 @@ public interface AddressService {
     int updateByPrimaryKey(AddressDO record);
 
     int insertSelective(AddressDO record);
+
+    AddressDO selectUserDefaultAddress(Integer id);
 }
