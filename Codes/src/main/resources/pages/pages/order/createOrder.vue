@@ -145,10 +145,10 @@
 		    //获取用户地址信息
             if (this.addressList == null) {
 				this.addressData =null
-                this.$api.msg("地址不存在")
+               // this.$api.msg("地址不存在")
             }else{
                 this.addressData = this.addressList
-                this.$api.msg("地址存在")
+               // this.$api.msg("地址存在")
 				console.log(this.addressData)
 			}
 

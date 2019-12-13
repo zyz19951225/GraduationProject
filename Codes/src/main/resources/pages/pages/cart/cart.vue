@@ -261,7 +261,6 @@
 						total:this.total
                     })}`
                 })
-                this.$api.msg('跳转下一页 sendData');
             }
         }
     }

@@ -48,6 +48,19 @@
 							@input="inputChange"
 							@confirm="toLogin"
 					/>
+				</view><view class="input-item">
+					<text class="tit">确认密码</text>
+					<input
+							type="mobile"
+							placeholder="请再次输入密码"
+							v-model="form_query.encrptPassword2"
+							placeholder-class="input-empty"
+							maxlength="20"
+							password
+							data-key="password"
+							@input="inputChange"
+							@confirm="toLogin"
+					/>
 				</view>
 			</view>
 			<button class="confirm-btn"  style="width: 300upx" @click="toRegist" :disabled="logining">注册</button>
@@ -78,6 +91,7 @@
 				form_query:{
                     telephone: '',
                     encrptPassword: '',
+                    encrptPassword2: '',
                     otpCode:"",
                     name:"Bnana",
                     gender:"1",
@@ -110,6 +124,12 @@
                 }
                 if(!/(^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$)/.test(this.form_query.encrptPassword)){
                     this.$api.msg('密码必须为英文加数字且大于6位');
+                    return;
+                }
+                if(this.form_query.encrptPassword != this.form_query.encrptPassword2){
+                    this.$api.msg('密码不一致，请重新输入');
+                    this.form_query.encrptPassword = ""
+                    this.form_query.encrptPassword2 = ""
                     return;
                 }
                 var params = this.form_query

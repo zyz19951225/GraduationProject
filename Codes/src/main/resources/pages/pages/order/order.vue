@@ -57,8 +57,8 @@
 							<text class="price">{{item.price}}</text>
 						</view>
 						<view class="action-box b-t" v-if="item.state == 0">
-							<button class="action-btn" @click="cancelOrder(item)">取消订单</button>
-							<button class="action-btn recom">立即支付</button>
+							<button class="action-btn" @click="deleteOrder(item.idInCarts,index)">取消订单</button>
+							<button class="action-btn recom" @click="navToCarts">去购物车</button>
 						</view>
 						<!--<view class="action-box b-t" v-if="">-->
 							<!--&lt;!&ndash;<button class="action-btn" @click="cancelOrder(item)">取消订单</button>&ndash;&gt;-->
@@ -143,15 +143,21 @@
 			}
 			// #endif
 
-			
 		},
         computed: {
             ...mapState(['userInfo'])
         },
 		 
 		methods: {
-			//获取订单列表
 
+            navToCarts(){
+                var url = '/pages/cart/cart';
+                console.log(url)
+                uni.switchTab({
+                    url
+                })
+            },
+            //获取订单列表
 			loadData(source){
 				//这里是将订单挂载到tab列表下
 				//获取当前列表索引
