@@ -48,7 +48,7 @@
 
 <script>
 	import {
-        mapMutations
+        mapMutations,mapState
     } from 'vuex';
 
 	export default{
@@ -67,8 +67,11 @@
 		onLoad(){
 
 		},
+        computed:{
+            ...mapState(['hasLogin','userInfo'])
+        },
 		methods: {
-			...mapMutations(['login']),
+			...mapMutations(['login','addressListSave']),
 			inputChange(e){
 				const key = e.currentTarget.dataset.key;
 				this[key] = e.detail.value;
@@ -92,7 +95,23 @@
                     url
                 })
             },
+			getUsersDefaultAddress(){
+                var params = this.userInfo.id
+				console.log(params)
+                this.$http.post("user/selectUserDefaultAddress?userId="+ params).then((res) => {
+                    console.log("selectUserDefaultAddress")
+                    console.log(res.data.data)
+                    this.addressListSave(res.data.data)
+                }).catch(error => {
+                    console.log(error)
+                }).finally(() => {
+                    //console.log("success")
+                })
+
+			},
 			async toLogin(){
+			    console.log("login!!!")
+
 				this.logining = true;
                 var params = this.form_query
                 this.$http.post("user/login", params).then((res) => {
@@ -100,6 +119,12 @@
                     console.log(res)
                     if(res.data.status === "success"){
                         this.login(res.data.data);
+                        var userId = res.data.data.id
+						this.getUsersDefaultAddress()
+                        // this.$http.get("user/selectUserDefaultAddress? userId="+userId).then((res) =>{
+						// 	console.log(res.data.data)
+						// 	this.addressListSave(res.data.data)
+						// }
                         this.navToHome()
                     }else{
                         this.$api.msg(res.data.data.errMsg);

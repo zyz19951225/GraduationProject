@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.shopproject.shop.dao.OrderInfoDOMapper" >
-  <resultMap id="BaseResultMap" type="com.shopproject.shop.dataobject.OrderInfoDO" >
+<mapper namespace="com.miaoshaproject.miaosha.dao.OrderInfoDOMapper" >
+  <resultMap id="BaseResultMap" type="com.miaoshaproject.miaosha.dataobject.OrderInfoDO" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="price" property="price" jdbcType="DECIMAL" />
@@ -72,7 +72,7 @@
   <sql id="Base_Column_List" >
     id, user_id, price, address, telephone, image, remark_info, order_time
   </sql>
-  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.shopproject.shop.dataobject.OrderInfoDOCriteria" >
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.miaoshaproject.miaosha.dataobject.OrderInfoDOCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -96,13 +96,13 @@
     delete from orders
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByCriteria" parameterType="com.shopproject.shop.dataobject.OrderInfoDOCriteria" >
+  <delete id="deleteByCriteria" parameterType="com.miaoshaproject.miaosha.dataobject.OrderInfoDOCriteria" >
     delete from orders
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.shopproject.shop.dataobject.OrderInfoDO" >
+  <insert id="insert" parameterType="com.miaoshaproject.miaosha.dataobject.OrderInfoDO" >
     insert into orders (id, user_id, price, 
       address, telephone, image, 
       remark_info, order_time)
@@ -110,7 +110,7 @@
       #{address,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, 
       #{remarkInfo,jdbcType=VARCHAR}, #{orderTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.shopproject.shop.dataobject.OrderInfoDO" >
+  <insert id="insertSelective" parameterType="com.miaoshaproject.miaosha.dataobject.OrderInfoDO" >
     insert into orders
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -165,7 +165,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByCriteria" parameterType="com.shopproject.shop.dataobject.OrderInfoDOCriteria" resultType="java.lang.Integer" >
+  <select id="countByCriteria" parameterType="com.miaoshaproject.miaosha.dataobject.OrderInfoDOCriteria" resultType="java.lang.Integer" >
     select count(*) from orders
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -217,7 +217,7 @@
       <include refid="Update_By_Criteria_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shopproject.shop.dataobject.OrderInfoDO" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.miaoshaproject.miaosha.dataobject.OrderInfoDO" >
     update orders
     <set >
       <if test="userId != null" >
@@ -244,7 +244,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shopproject.shop.dataobject.OrderInfoDO" >
+  <update id="updateByPrimaryKey" parameterType="com.miaoshaproject.miaosha.dataobject.OrderInfoDO" >
     update orders
     set user_id = #{userId,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
@@ -255,7 +255,7 @@
       order_time = #{orderTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.shopproject.shop.dataobject.OrderInfoDOCriteria" id="selectByCriteriaWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.miaoshaproject.miaosha.dataobject.OrderInfoDOCriteria" id="selectByCriteriaWithRowbounds" >
     select
     <if test="distinct" >
       distinct

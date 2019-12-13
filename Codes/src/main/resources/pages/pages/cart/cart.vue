@@ -255,7 +255,6 @@
                     }
                 })
 				console.log(goodsData)
-
                 uni.navigateTo({
                     url: `/pages/order/createOrder?data=${JSON.stringify({
                         goodsData: goodsData,

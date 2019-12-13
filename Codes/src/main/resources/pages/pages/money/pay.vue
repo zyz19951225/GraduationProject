@@ -93,7 +93,6 @@
             },
 			//确认支付
 			confirm() {
-
 			    var params = this.orderInfo
                 this.$http.post("user/createOrderInfo",params).then((res) => {
                     console.log(res)
@@ -107,9 +106,7 @@
                     console.log(error)
                     return
                 }).finally(() => {
-
                 })
-
 				uni.redirectTo({
 					url: '/pages/money/paySuccess'
 				})

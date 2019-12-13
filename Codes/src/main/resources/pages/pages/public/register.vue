@@ -50,7 +50,8 @@
 					/>
 				</view>
 			</view>
-			<button class="confirm-btn" @click="toRegist" :disabled="logining">注册</button>
+			<button class="confirm-btn"  style="width: 300upx" @click="toRegist" :disabled="logining">注册</button>
+			<button class="confirm-btn" @click="navToLogin" >已有账号去登录</button>
 			<!--<view class="forget-section">-->
 				<!--忘记密码?-->
 			<!--</view>-->
@@ -103,6 +104,14 @@
                 })
             },
             toRegist() {
+                if(!/(^1[3|4|5|7|8][0-9]{9}$)/.test(this.form_query.telephone)){
+                    this.$api.msg('请输入正确的手机号码');
+                    return;
+                }
+                if(!/(^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$)/.test(this.form_query.encrptPassword)){
+                    this.$api.msg('密码必须为英文加数字且大于6位');
+                    return;
+                }
                 var params = this.form_query
                 this.$http.post("user/register", params).then((res) => {
                     console.log("success")

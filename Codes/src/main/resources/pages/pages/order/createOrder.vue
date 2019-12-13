@@ -139,11 +139,16 @@
             ...mapState(['hasLogin','userInfo','addressList'])
         },
 		onLoad(option){
+		    console.log("this.addressList")
+			console.log(typeof (this.addressList))
+		    // console.log(this.addressList[0])
 		    //获取用户地址信息
-            if (typeof (this.addressList[0]) == "undefined") {
+            if (this.addressList == null) {
 				this.addressData =null
+                this.$api.msg("地址不存在")
             }else{
-                this.addressData = this.addressList[0]
+                this.addressData = this.addressList
+                this.$api.msg("地址存在")
 				console.log(this.addressData)
 			}
 
@@ -203,13 +208,18 @@
 				this.payType = type;
 			},
 			submit(){
-				uni.redirectTo({
-					url:`/pages/money/pay?data=${JSON.stringify({
+                if(this.addressData != null){
+                    uni.redirectTo({
+                        url:`/pages/money/pay?data=${JSON.stringify({
                             orderInfo: this.orderInfo,
-						    needDeleteOrder:this.needDeleteOrder,
-							needPay:this.totalPrice
+                            needDeleteOrder:this.needDeleteOrder,
+                            needPay:this.totalPrice
                         })}`
-				})
+                    })
+				}else {
+                    this.$api.msg("请先选择收货地址！！！")
+				}
+
 			},
 			stopPrevent(){}
 		}

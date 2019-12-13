@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.shopproject.shop.dao.CarouselMapDOMapper" >
-  <resultMap id="BaseResultMap" type="com.shopproject.shop.dataobject.CarouselMapDO" >
+<mapper namespace="com.miaoshaproject.miaosha.dao.CarouselMapDOMapper" >
+  <resultMap id="BaseResultMap" type="com.miaoshaproject.miaosha.dataobject.CarouselMapDO" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="img_id" property="imgId" jdbcType="INTEGER" />
     <result column="src" property="src" jdbcType="VARCHAR" />
@@ -68,7 +68,7 @@
   <sql id="Base_Column_List" >
     id, img_id, src, background
   </sql>
-  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.shopproject.shop.dataobject.CarouselMapDOCriteria" >
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.miaoshaproject.miaosha.dataobject.CarouselMapDOCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -92,19 +92,19 @@
     delete from carousel_map
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByCriteria" parameterType="com.shopproject.shop.dataobject.CarouselMapDOCriteria" >
+  <delete id="deleteByCriteria" parameterType="com.miaoshaproject.miaosha.dataobject.CarouselMapDOCriteria" >
     delete from carousel_map
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.shopproject.shop.dataobject.CarouselMapDO" >
+  <insert id="insert" parameterType="com.miaoshaproject.miaosha.dataobject.CarouselMapDO" >
     insert into carousel_map (id, img_id, src, 
       background)
     values (#{id,jdbcType=INTEGER}, #{imgId,jdbcType=INTEGER}, #{src,jdbcType=VARCHAR}, 
       #{background,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.shopproject.shop.dataobject.CarouselMapDO" >
+  <insert id="insertSelective" parameterType="com.miaoshaproject.miaosha.dataobject.CarouselMapDO" >
     insert into carousel_map
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -135,7 +135,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByCriteria" parameterType="com.shopproject.shop.dataobject.CarouselMapDOCriteria" resultType="java.lang.Integer" >
+  <select id="countByCriteria" parameterType="com.miaoshaproject.miaosha.dataobject.CarouselMapDOCriteria" resultType="java.lang.Integer" >
     select count(*) from carousel_map
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -171,7 +171,7 @@
       <include refid="Update_By_Criteria_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shopproject.shop.dataobject.CarouselMapDO" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.miaoshaproject.miaosha.dataobject.CarouselMapDO" >
     update carousel_map
     <set >
       <if test="imgId != null" >
@@ -186,14 +186,14 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shopproject.shop.dataobject.CarouselMapDO" >
+  <update id="updateByPrimaryKey" parameterType="com.miaoshaproject.miaosha.dataobject.CarouselMapDO" >
     update carousel_map
     set img_id = #{imgId,jdbcType=INTEGER},
       src = #{src,jdbcType=VARCHAR},
       background = #{background,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.shopproject.shop.dataobject.CarouselMapDOCriteria" id="selectByCriteriaWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.miaoshaproject.miaosha.dataobject.CarouselMapDOCriteria" id="selectByCriteriaWithRowbounds" >
     select
     <if test="distinct" >
       distinct

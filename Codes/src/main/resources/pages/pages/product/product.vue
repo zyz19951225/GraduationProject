@@ -240,11 +240,10 @@
 				]
 			};
 		},
-        computed:{
-            ...mapState(['addressList','userInfo'])
+        computed: {
+            ...mapState(['hasLogin','userInfo'])
         },
 		async onLoad(options){
-			
 			//接收传值,id里面放的是标题，因为测试数据并没写id 
 			// 接受url: `/pages/product/product?id=${id}`
 			this.currentId = options.id
@@ -264,10 +263,7 @@
                 }).finally(() => {
 
                 })
-
 			}
-			
-			
 			//规格 默认选中第一条
 			this.specList.forEach(item=>{
 				for(let cItem of this.specChildList){
@@ -280,9 +276,18 @@
 			})
 			this.shareList = await this.$api.json('shareList');
 		},
+
 		methods:{
 
             addToCart(){
+                if(!this.hasLogin) {
+                    var url = '/pages/public/login';
+                    uni.navigateTo({
+                        url
+                    })
+                    return
+                }
+
                 var form_query = {
                     userId:this.userInfo.id,
 					fruitId:this.currentId
@@ -349,11 +354,19 @@
 				this.favorite = !this.favorite;
 			},
 			buy(){
-				uni.navigateTo({
-					url: `/pages/order/createOrder?data=${JSON.stringify({
-                        fruitInfoDetail: this.fruitInfoDetail
-                    })}`
-				})
+                if(!this.hasLogin){
+                    var url = '/pages/public/login';
+                    uni.navigateTo({
+                        url
+                    })
+                }else {
+                    uni.navigateTo({
+                        url: `/pages/order/createOrder?data=${JSON.stringify({
+                            fruitInfoDetail: this.fruitInfoDetail
+                        })}`
+                    })
+				}
+
 			},
 			stopPrevent(){},
             jsonToStr(json) {
