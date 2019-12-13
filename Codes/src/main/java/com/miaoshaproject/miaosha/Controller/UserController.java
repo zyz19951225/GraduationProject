@@ -89,6 +89,14 @@ public class UserController {
         return CommonReturnType.create(addressDOList);
     }
 
+    //用户地址修改
+    @RequestMapping(value = "/updateUsersAddress")
+    @ResponseBody
+    public CommonReturnType updateUsersAddress(@RequestBody AddressDO addressDO) throws BusinessException {
+        int flag = addressService.updateByPrimaryKey(addressDO);
+        return CommonReturnType.create(null);
+    }
+
     //用户默认地址查询
     @RequestMapping(value = "/selectUserDefaultAddress")
     @ResponseBody
