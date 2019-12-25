@@ -26,7 +26,7 @@ const store = new Vuex.Store({
 		  console.log("SaveMyAddressList")
 		  console.log(provider)
           state.addressList = provider;
-            uni.setStorage({//缓存用户登陆状态
+            uni.setStorage({//缓存用户地址信息
                 key: 'addressList',
                 data: provider
             })

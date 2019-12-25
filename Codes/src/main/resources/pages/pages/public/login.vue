@@ -50,6 +50,7 @@
 	import {
         mapMutations,mapState
     } from 'vuex';
+    //import {Decrypt,Encrypt} from '../../security/cryptojs'
 
 	export default{
 		data(){
@@ -98,7 +99,7 @@
 			getUsersDefaultAddress(){
                 var params = this.userInfo.id
 				console.log(params)
-                this.$http.post("user/selectUserDefaultAddress?userId="+ params).then((res) => {
+                this.$http.post("address/selectUserDefaultAddress?userId="+ params).then((res) => {
                     console.log("selectUserDefaultAddress")
                     console.log(res.data.data)
                     this.addressListSave(res.data.data)
@@ -110,8 +111,17 @@
 
 			},
 			async toLogin(){
-			    console.log("login!!!")
+                if(!/(^1[3|4|5|7|8][0-9]{9}$)/.test(this.form_query.telephone)){
+                    this.$api.msg('请输入正确的手机号码');
+                    return;
+                }
 
+                if(this.form_query.encrptPassword == null || this.form_query.encrptPassword == "" ){
+                    this.$api.msg('请输入密码！');
+                    return;
+                }
+				 //this.form_query.telephone = Encrypt(this.form_query.telephone)
+				 //this.form_query.encrptPassword = Encrypt(this.form_query.encrptPassword)
 				this.logining = true;
                 var params = this.form_query
                 this.$http.post("user/login", params).then((res) => {
@@ -129,6 +139,7 @@
                     }else{
                         this.$api.msg(res.data.data.errMsg);
                         this.logining = false;
+                        this.form_query = {}
                     }
                     // if (res.data.status == "fail") {
                     //     this.$api.msg(res.data.data.errMsg);

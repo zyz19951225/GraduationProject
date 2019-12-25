@@ -40,7 +40,7 @@
 					<input
 							type="mobile"
 							v-model="form_query.encrptPassword"
-							placeholder="8-18位不含特殊字符的数字、字母组合"
+							placeholder="6-18位不含特殊字符的数字、字母组合"
 							placeholder-class="input-empty"
 							maxlength="20"
 							password
@@ -77,7 +77,7 @@
 	import {
         mapMutations
     } from 'vuex';
-
+    import {Decrypt,Encrypt} from '../../security/cryptojs';
 	export default{
 		data(){
 			return {
@@ -122,17 +122,23 @@
                     this.$api.msg('请输入正确的手机号码');
                     return;
                 }
-                if(!/(^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$)/.test(this.form_query.encrptPassword)){
+                if(!/(^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$)/.test(this.form_query.encrptPassword)){
                     this.$api.msg('密码必须为英文加数字且大于6位');
+                    return;
+                } if(this.form_query.encrptPassword2 == null || this.form_query.encrptPassword2 == "" ){
+                    this.$api.msg('请确认密码！');
                     return;
                 }
                 if(this.form_query.encrptPassword != this.form_query.encrptPassword2){
-                    this.$api.msg('密码不一致，请重新输入');
+                    this.$api.msg('密码不一致，请重新输入！');
                     this.form_query.encrptPassword = ""
                     this.form_query.encrptPassword2 = ""
                     return;
                 }
+                //this.form_query.telephone = Encrypt(this.form_query.telephone)
+                this.form_query.encrptPassword = Encrypt(this.form_query.encrptPassword)
                 var params = this.form_query
+
                 this.$http.post("user/register", params).then((res) => {
                     console.log("success")
                     console.log(res)

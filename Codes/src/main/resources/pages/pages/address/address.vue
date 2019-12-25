@@ -47,7 +47,7 @@
             ...mapMutations(['addressListSave']),
 		    initAddress(){
 		        var params = this.userInfo.id
-                this.$http.post("user/findUserAddress?userId="+params).then((res) => {
+                this.$http.post("address/findUserAddress?userId="+params).then((res) => {
                     console.log("success")
                     console.log(res)
                     if(res.data.status === "success"){

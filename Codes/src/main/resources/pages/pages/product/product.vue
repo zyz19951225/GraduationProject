@@ -293,7 +293,7 @@
 					fruitId:this.currentId
 				}
                 var params = this.jsonToStr(form_query)
-                this.$http.post("user/addToCart?"+ params).then((res) => {
+                this.$http.post("cart/addToCart?"+ params).then((res) => {
                     console.log("success")
                     console.log(res)
                     if (res.data.status == "success") {

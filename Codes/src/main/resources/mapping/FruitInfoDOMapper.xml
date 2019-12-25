@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.miaoshaproject.miaosha.dao.FruitInfoDOMapper" >
-  <resultMap id="BaseResultMap" type="com.miaoshaproject.miaosha.dataobject.FruitInfoDO" >
+<mapper namespace="com.fruitProject.fruit.dao.FruitInfoDOMapper" >
+  <resultMap id="BaseResultMap" type="com.fruitProject.fruit.dataobject.FruitInfoDO" >
     <id column="fruit_id" property="fruitId" jdbcType="INTEGER" />
     <result column="image" property="image" jdbcType="VARCHAR" />
     <result column="image2" property="image2" jdbcType="VARCHAR" />
@@ -73,7 +73,7 @@
   <sql id="Base_Column_List" >
     fruit_id, image, image2, image3, title, description, price, sales, stock
   </sql>
-  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.miaoshaproject.miaosha.dataobject.FruitInfoDOCriteria" >
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.fruitProject.fruit.dataobject.FruitInfoDOCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -97,13 +97,13 @@
     delete from fruit_info
     where fruit_id = #{fruitId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByCriteria" parameterType="com.miaoshaproject.miaosha.dataobject.FruitInfoDOCriteria" >
+  <delete id="deleteByCriteria" parameterType="com.fruitProject.fruit.dataobject.FruitInfoDOCriteria" >
     delete from fruit_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.miaoshaproject.miaosha.dataobject.FruitInfoDO" >
+  <insert id="insert" parameterType="com.fruitProject.fruit.dataobject.FruitInfoDO" >
     insert into fruit_info (fruit_id, image, image2, 
       image3, title, description, 
       price, sales, stock
@@ -113,7 +113,7 @@
       #{price,jdbcType=DECIMAL}, #{sales,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.miaoshaproject.miaosha.dataobject.FruitInfoDO" >
+  <insert id="insertSelective" parameterType="com.fruitProject.fruit.dataobject.FruitInfoDO" >
     insert into fruit_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="fruitId != null" >
@@ -174,7 +174,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByCriteria" parameterType="com.miaoshaproject.miaosha.dataobject.FruitInfoDOCriteria" resultType="java.lang.Integer" >
+  <select id="countByCriteria" parameterType="com.fruitProject.fruit.dataobject.FruitInfoDOCriteria" resultType="java.lang.Integer" >
     select count(*) from fruit_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -230,7 +230,7 @@
       <include refid="Update_By_Criteria_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.miaoshaproject.miaosha.dataobject.FruitInfoDO" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.fruitProject.fruit.dataobject.FruitInfoDO" >
     update fruit_info
     <set >
       <if test="image != null" >
@@ -260,7 +260,7 @@
     </set>
     where fruit_id = #{fruitId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.miaoshaproject.miaosha.dataobject.FruitInfoDO" >
+  <update id="updateByPrimaryKey" parameterType="com.fruitProject.fruit.dataobject.FruitInfoDO" >
     update fruit_info
     set image = #{image,jdbcType=VARCHAR},
       image2 = #{image2,jdbcType=VARCHAR},
@@ -272,7 +272,7 @@
       stock = #{stock,jdbcType=INTEGER}
     where fruit_id = #{fruitId,jdbcType=INTEGER}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.miaoshaproject.miaosha.dataobject.FruitInfoDOCriteria" id="selectByCriteriaWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.fruitProject.fruit.dataobject.FruitInfoDOCriteria" id="selectByCriteriaWithRowbounds" >
     select
     <if test="distinct" >
       distinct

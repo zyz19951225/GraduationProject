@@ -143,12 +143,13 @@
 			console.log(typeof (this.addressList))
 		    // console.log(this.addressList[0])
 		    //获取用户地址信息
-            if (this.addressList == null) {
+            if (this.addressList.length < 1) {
 				this.addressData =null
-               // this.$api.msg("地址不存在")
+                this.$api.msg("地址不存在")
             }else{
-                this.addressData = this.addressList
-               // this.$api.msg("地址存在")
+                this.addressData = this.addressList[0]
+                this.$api.msg("地址存在")
+				console.log("dizhi ")
 				console.log(this.addressData)
 			}
 
@@ -167,11 +168,13 @@
                 this.orderInfo.address = this.addressData.address
                 this.orderInfo.image = this.checkedFruit[0].item.image
                 this.orderInfo.price = this.totalPrice
+                //this.checkedFruit[0].item.num = 1
+                //this.orderInfo.num = 1
             }else{
                 this.orderType = "0"
 			    console.log(JSON.parse(option.data).fruitInfoDetail)
                  this.checkedFruit = JSON.parse(option.data).fruitInfoDetail
-
+                this.checkedFruit[0].num = 1
                  //this.needDeleteOrder.push(this.checkedFruit[0].id)
                 this.totalPrice = this.checkedFruit[0].price
                 this.orderInfo.userId = this.userInfo.id
@@ -179,6 +182,7 @@
                 this.orderInfo.address = this.addressData.address
                 this.orderInfo.image = this.checkedFruit[0].image
                 this.orderInfo.price = this.totalPrice
+                //this.orderInfo.num = this.totalPrice
 
 			}
 
@@ -187,7 +191,7 @@
             getUsersDefaultAddress(){
 				var params = this.userInfo.id
                 //selectUserDefaultAddress
-                this.$http.post("user/selectUserDefaultAddress?",data).then((res) => {
+                this.$http.post("address/selectUserDefaultAddress?",data).then((res) => {
                     console.log("success")
                     console.log(res)
                     if(res.data.status === "success"){
@@ -208,7 +212,10 @@
 				this.payType = type;
 			},
 			submit(){
-                if(this.addressData != null){
+                if(this.addressData!= null){
+					console.log(this.addressData.length)
+					console.log(this.addressData)
+					console.log("------*********--------")
                     uni.redirectTo({
                         url:`/pages/money/pay?data=${JSON.stringify({
                             orderInfo: this.orderInfo,

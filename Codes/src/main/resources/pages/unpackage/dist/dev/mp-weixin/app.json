@@ -3,7 +3,7 @@
     "pages/index/index",
     "pages/product/product",
     "pages/set/set",
-    "pages/userinfo/userinfo",
+    "pages/user/userInfo",
     "pages/cart/cart",
     "pages/public/login",
     "pages/user/user",
@@ -13,12 +13,11 @@
     "pages/order/createOrder",
     "pages/address/address",
     "pages/address/addressManage",
+    "pages/public/register",
     "pages/money/pay",
     "pages/money/paySuccess",
     "pages/notice/notice",
-    "pages/category/category",
-    "pages/product/list",
-    "pages/public/register"
+    "pages/product/list"
   ],
   "subPackages": [],
   "window": {
@@ -52,13 +51,12 @@
         "text": "购物车"
       },
       {
-        "pagePath": "pages/public/login",
+        "pagePath": "pages/user/user",
         "iconPath": "static/tab-my.png",
         "selectedIconPath": "static/tab-my-current.png",
         "text": "我的"
       }
     ]
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap12.json"
+  "usingComponents": {}
 }

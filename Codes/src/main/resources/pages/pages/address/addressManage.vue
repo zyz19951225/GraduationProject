@@ -120,7 +120,7 @@
 					return;
 				}
 				if(this.commitType == 'edit'){
-                    this.$http.post("user/updateUsersAddress",data).then((res) => {
+                    this.$http.post("address/updateUsersAddress",data).then((res) => {
                         console.log("success")
                         console.log(res)
                         if(res.data.status === "success"){
@@ -136,7 +136,7 @@
                     })
 				}else {
 				    data.userId = that.userInfo.id
-                    this.$http.post("user/addUsersAddress",data).then((res) => {
+                    this.$http.post("address/addUsersAddress",data).then((res) => {
                         console.log("success")
                         console.log(res)
                         if(res.data.status === "success"){

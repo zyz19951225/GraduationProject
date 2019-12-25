@@ -215,7 +215,7 @@
 				uni.showLoading({
 					title: '请稍后'
 				})
-                this.$http.post("user/deleteSelectFruit?id="+ fruitId).then((res) => {
+                this.$http.post("cart/deleteSelectFruit?id="+ fruitId).then((res) => {
                     console.log("success")
                     console.log(res)
                     if (res.data.status == "success") {

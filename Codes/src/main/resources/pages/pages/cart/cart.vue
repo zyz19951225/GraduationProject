@@ -121,7 +121,7 @@
                 var _this = this
                 console.log("carList!!!!!!")
 				var params = this.userInfo.id
-                this.$http.post("user/checkMyCart?userId="+ params).then((res) => {
+                this.$http.post("cart/checkMyCart?userId="+ params).then((res) => {
                     console.log("success")
                     console.log(res)
                     if (res.data.status == "success") {
@@ -176,6 +176,10 @@
             numberChange(data){
                 console.log(data.index)
                 console.log(data.number)
+				if(data.number == 1){
+                    this.$api.msg("不能在减少了呀！")
+				}
+
                 this.cartList[data.index].num = data.number;
                 this.calcTotal();
             },
@@ -183,7 +187,7 @@
             deleteCartItem(id){
                 console.log(id)
 				var _this = this
-                this.$http.post("user/deleteSelectFruit?id="+ id).then((res) => {
+                this.$http.post("cart/deleteSelectFruit?id="+ id).then((res) => {
                     console.log("success")
                     console.log(res)
                     if (res.data.status == "success") {
@@ -206,7 +210,7 @@
                 uni.showModal({
                     content: '清空购物车？',
                     success: (e)=>{
-                        this.$http.post("user/deleteAllFruit?id="+ id).then((res) => {
+                        this.$http.post("cart/deleteAllFruit?id="+ id).then((res) => {
                             console.log("success")
                             console.log(res)
                             if (res.data.status == "success") {
